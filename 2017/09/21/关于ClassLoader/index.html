@@ -78,7 +78,7 @@
 <meta property="og:description" content="ClassLoader 基本职责类加载器负责读取Java的字节码文件，并把它转换成一个Class实例，换句话说，也就是把类文件从硬盘load到内存中。 ClassLoader 类型Java中主要提供三种类型的ClassLoader  BootStrapClassLoader：C++代码编写，集成在JVM中 ExtClassLoader：Java代码编写，sun.misc.Launcher的内部类">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2017/09/21/关于ClassLoader/classloader_extends.png">
-<meta property="og:updated_time" content="2017-09-22T09:57:25.651Z">
+<meta property="og:updated_time" content="2017-09-22T10:34:04.242Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于ClassLoader">
 <meta name="twitter:description" content="ClassLoader 基本职责类加载器负责读取Java的字节码文件，并把它转换成一个Class实例，换句话说，也就是把类文件从硬盘load到内存中。 ClassLoader 类型Java中主要提供三种类型的ClassLoader  BootStrapClassLoader：C++代码编写，集成在JVM中 ExtClassLoader：Java代码编写，sun.misc.Launcher的内部类">
@@ -456,6 +456,33 @@ AppClassLoader加载路径如下(By getProperty)：
 <h4 id="ClassLoader-组织结构"><a href="#ClassLoader-组织结构" class="headerlink" title="ClassLoader 组织结构"></a>ClassLoader 组织结构</h4><h5 id="类继承结构"><a href="#类继承结构" class="headerlink" title="类继承结构"></a>类继承结构</h5><p>1、BootStrapClassLoader为C++代码编写，不继承自ClassLoader<br>2、ExtClassLoader、AppClassLoader均继承自URLClassLoader  </p>
 <p>具体继承关系如下：</p>
 <div align="center"><br><img src="classloader_extends.png" alt=""><br></div>
+
+<h5 id="层次结构"><a href="#层次结构" class="headerlink" title="层次结构"></a>层次结构</h5><p>前文中提到，ExtClassLoader可由AppClassLoader通过getParent()获得，ClassLoader之间是存在父子关系的，其实这种父子关系只是逻辑关系上的，区别于类继承时父类与子类的关系，两者之间并没有实际的继承关系，而是通过getParent()进行维护。<br>请注意下面这段代码（摘自ClassLoader）：</p>
+<pre><code>private final ClassLoader parent;
+
+public final ClassLoader getParent() {
+        if (parent == null)
+            return null;
+        SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            // Check access to the parent class loader
+            // If the caller&apos;s class loader is same as this class loader,
+            // permission check is performed.
+            checkClassLoaderPermission(parent, Reflection.getCallerClass());
+        }
+        return parent;
+    }
+</code></pre><blockquote>
+<p>ClassLoader中存在ClassLoader类型的成员变量parent，根据命名我们也能猜测到是记录父ClassLoader的，通过getParent可获取该变量。</p>
+</blockquote>
+<p>我们来看下前面提到的几个ClassLoader的父子关系，代码以及输出如下：  </p>
+<pre><code>System.out.println(&quot;ExtClassLoader getParent(): &quot;+extClassLoader.getParent());
+System.out.println(&quot;AppClassLoader getParent(): &quot;+appClassLoader.getParent());
+
+输出：
+ExtClassLoader getParent(): null
+AppClassLoader getParent(): sun.misc.Launcher$ExtClassLoader@70d11f32
+</code></pre>
       
     </div>
     
@@ -626,7 +653,7 @@ AppClassLoader加载路径如下(By getProperty)：
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#ClassLoader-基本职责"><span class="nav-number">1.</span> <span class="nav-text">ClassLoader 基本职责</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ClassLoader-类型"><span class="nav-number">2.</span> <span class="nav-text">ClassLoader 类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ClassLoader-组织结构"><span class="nav-number">3.</span> <span class="nav-text">ClassLoader 组织结构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#类继承结构"><span class="nav-number">3.1.</span> <span class="nav-text">类继承结构</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#ClassLoader-基本职责"><span class="nav-number">1.</span> <span class="nav-text">ClassLoader 基本职责</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ClassLoader-类型"><span class="nav-number">2.</span> <span class="nav-text">ClassLoader 类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ClassLoader-组织结构"><span class="nav-number">3.</span> <span class="nav-text">ClassLoader 组织结构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#类继承结构"><span class="nav-number">3.1.</span> <span class="nav-text">类继承结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#层次结构"><span class="nav-number">3.2.</span> <span class="nav-text">层次结构</span></a></li></ol></li></ol></div>
             
 
           </div>
