@@ -488,12 +488,12 @@ AppClassLoader getParent(): sun.misc.Launcher$ExtClassLoader@70d11f32
 
 <p>我估计这里大家会有一些疑问  </p>
 <p>1、为什么要维护这样的父子关系模型？<br>这样的父子关系模型主要是为了下面将要讲到的双亲委托模型，不要急，慢慢看~  </p>
-<p>2、明明ExtClassLoader的getParent为null,为什么父ClassLoader是BootStrapClassLoader呢？<br>原因为BootStrapClassLoader为C++代码编写，不存在Java示例，无法通过parent持有，但是他们在双亲委托模型中确认存在父和子的逻辑关系。后续也会讲到  </p>
+<p>2、明明ExtClassLoader的getParent为null,为什么父ClassLoader是BootStrapClassLoader呢？<br>原因为BootStrapClassLoader为C++代码编写，不存在Java示例，无法通过parent持有，但是他们在双亲委托模型中确实存在父和子的逻辑关系。后续也会讲到~  </p>
 <blockquote>
 <p>可以想象一下如果BootStrapClassLoader如果由Java代码编写会有什么问题呢？</p>
 </blockquote>
-<p>3、怎么确定的自定义ClassLoader(CustomClassLoader)的父亲是AppClassLoader呢？<br>一会看过自定义ClassLoader的方式就会明白的~</p>
-<h3 id="双亲委托模型"><a href="#双亲委托模型" class="headerlink" title="双亲委托模型"></a>双亲委托模型</h3><h3 id="自定义ClassLoader"><a href="#自定义ClassLoader" class="headerlink" title="自定义ClassLoader"></a>自定义ClassLoader</h3><p>类加载过程</p>
+<p>3、怎么确定的自定义ClassLoader(CustomClassLoader)的父亲是AppClassLoader呢？<br>一会看过自定义ClassLoader的方式也会明白的~</p>
+<h3 id="双亲委托模型"><a href="#双亲委托模型" class="headerlink" title="双亲委托模型"></a>双亲委托模型</h3><h4 id="什么是双亲委托模型"><a href="#什么是双亲委托模型" class="headerlink" title="什么是双亲委托模型"></a>什么是双亲委托模型</h4><h4 id="双亲委托模型怎么实现"><a href="#双亲委托模型怎么实现" class="headerlink" title="双亲委托模型怎么实现"></a>双亲委托模型怎么实现</h4><h4 id="双亲委托模型的作用是什么"><a href="#双亲委托模型的作用是什么" class="headerlink" title="双亲委托模型的作用是什么"></a>双亲委托模型的作用是什么</h4><h3 id="自定义ClassLoader"><a href="#自定义ClassLoader" class="headerlink" title="自定义ClassLoader"></a>自定义ClassLoader</h3><p>类加载过程</p>
 <p>ClassLoader在Android中</p>
 
           
