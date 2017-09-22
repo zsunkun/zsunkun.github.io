@@ -78,9 +78,8 @@
 <meta property="og:description" content="ClassLoader 基本职责类加载器负责读取Java的字节码文件，并把它转换成一个Class实例，换句话说，也就是把类文件从硬盘load到内存中。 ClassLoader 类型Java中主要提供三种类型的ClassLoader  BootStrapClassLoader：C++代码编写，集成在JVM中 ExtClassLoader：Java代码编写，sun.misc.Launcher的内部类">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2017/09/21/关于ClassLoader/classloader_extends.png">
-<meta property="og:image" content="http://yoursite.com/2017/09/21/关于ClassLoader/classloader_extends.png">
 <meta property="og:image" content="http://yoursite.com/2017/09/21/关于ClassLoader/parent.png">
-<meta property="og:updated_time" content="2017-09-22T11:35:56.787Z">
+<meta property="og:updated_time" content="2017-09-22T11:41:42.094Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java中ClassLoader解析">
 <meta name="twitter:description" content="ClassLoader 基本职责类加载器负责读取Java的字节码文件，并把它转换成一个Class实例，换句话说，也就是把类文件从硬盘load到内存中。 ClassLoader 类型Java中主要提供三种类型的ClassLoader  BootStrapClassLoader：C++代码编写，集成在JVM中 ExtClassLoader：Java代码编写，sun.misc.Launcher的内部类">
@@ -457,7 +456,7 @@ AppClassLoader加载路径如下(By getProperty)：
 </ul>
 <h3 id="ClassLoader-组织结构"><a href="#ClassLoader-组织结构" class="headerlink" title="ClassLoader 组织结构"></a>ClassLoader 组织结构</h3><h4 id="类继承结构"><a href="#类继承结构" class="headerlink" title="类继承结构"></a>类继承结构</h4><p>1、BootStrapClassLoader为C++代码编写，不继承自ClassLoader<br>2、ExtClassLoader、AppClassLoader均继承自URLClassLoader  </p>
 <p>具体继承关系如下：</p>
-<div align="center"><br><img src="classloader_extends.png" alt=""><br><img src="/2017/09/21/关于ClassLoader/classloader_extends.png" alt="ClassLoaderExtends" title="ClassLoaderExtends"><br></div>
+<div align="center"><br><img src="/2017/09/21/关于ClassLoader/classloader_extends.png" alt="ClassLoaderExtends" title="ClassLoaderExtends"><br></div>
 
 <h4 id="层次结构"><a href="#层次结构" class="headerlink" title="层次结构"></a>层次结构</h4><p>前文中提到，ExtClassLoader可由AppClassLoader通过getParent()获得，ClassLoader之间是存在父子关系的，其实这种父子关系只是逻辑关系上的，区别于类继承时父类与子类的关系，两者之间并没有实际的继承关系，而是通过getParent()进行维护。<br>请注意下面这段代码（摘自ClassLoader）：</p>
 <pre><code>private final ClassLoader parent;
