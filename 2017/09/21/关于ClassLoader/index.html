@@ -53,7 +53,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Android," />
+  <meta name="keywords" content="Java," />
 
 
 
@@ -70,17 +70,18 @@
 
 
 <meta name="description" content="ClassLoader 基本职责类加载器负责读取Java的字节码文件，并把它转换成一个Class实例，换句话说，也就是把类文件从硬盘load到内存中。 ClassLoader 类型Java中主要提供三种类型的ClassLoader  BootStrapClassLoader：C++代码编写，集成在JVM中 ExtClassLoader：Java代码编写，sun.misc.Launcher的内部类">
-<meta name="keywords" content="Android">
+<meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="关于ClassLoader">
+<meta property="og:title" content="Java中ClassLoader解析">
 <meta property="og:url" content="http://yoursite.com/2017/09/21/关于ClassLoader/index.html">
 <meta property="og:site_name" content="Hello World">
 <meta property="og:description" content="ClassLoader 基本职责类加载器负责读取Java的字节码文件，并把它转换成一个Class实例，换句话说，也就是把类文件从硬盘load到内存中。 ClassLoader 类型Java中主要提供三种类型的ClassLoader  BootStrapClassLoader：C++代码编写，集成在JVM中 ExtClassLoader：Java代码编写，sun.misc.Launcher的内部类">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2017/09/21/关于ClassLoader/classloader_extends.png">
-<meta property="og:updated_time" content="2017-09-22T10:36:48.356Z">
+<meta property="og:image" content="http://yoursite.com/2017/09/21/关于ClassLoader/parent.png">
+<meta property="og:updated_time" content="2017-09-22T10:58:12.937Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="关于ClassLoader">
+<meta name="twitter:title" content="Java中ClassLoader解析">
 <meta name="twitter:description" content="ClassLoader 基本职责类加载器负责读取Java的字节码文件，并把它转换成一个Class实例，换句话说，也就是把类文件从硬盘load到内存中。 ClassLoader 类型Java中主要提供三种类型的ClassLoader  BootStrapClassLoader：C++代码编写，集成在JVM中 ExtClassLoader：Java代码编写，sun.misc.Launcher的内部类">
 <meta name="twitter:image" content="http://yoursite.com/2017/09/21/关于ClassLoader/classloader_extends.png">
 
@@ -118,7 +119,7 @@
 
 
 
-  <title>关于ClassLoader | Hello World</title>
+  <title>Java中ClassLoader解析 | Hello World</title>
   
 
 
@@ -272,7 +273,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">关于ClassLoader</h1>
+          <h1 class="post-title" itemprop="name headline">Java中ClassLoader解析</h1>
         
 
         <div class="post-meta">
@@ -307,8 +308,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -344,8 +345,8 @@
       
 
       
-        <h4 id="ClassLoader-基本职责"><a href="#ClassLoader-基本职责" class="headerlink" title="ClassLoader 基本职责"></a>ClassLoader 基本职责</h4><p>类加载器负责读取Java的字节码文件，并把它转换成一个Class实例，换句话说，也就是把类文件从硬盘load到内存中。</p>
-<h4 id="ClassLoader-类型"><a href="#ClassLoader-类型" class="headerlink" title="ClassLoader 类型"></a>ClassLoader 类型</h4><p><strong>Java中主要提供三种类型的ClassLoader</strong></p>
+        <h3 id="ClassLoader-基本职责"><a href="#ClassLoader-基本职责" class="headerlink" title="ClassLoader 基本职责"></a>ClassLoader 基本职责</h3><p>类加载器负责读取Java的字节码文件，并把它转换成一个Class实例，换句话说，也就是把类文件从硬盘load到内存中。</p>
+<h3 id="ClassLoader-类型"><a href="#ClassLoader-类型" class="headerlink" title="ClassLoader 类型"></a>ClassLoader 类型</h3><p><strong>Java中主要提供三种类型的ClassLoader</strong></p>
 <ul>
 <li>BootStrapClassLoader：C++代码编写，集成在JVM中</li>
 <li>ExtClassLoader：Java代码编写，sun.misc.Launcher的内部类</li>
@@ -453,11 +454,11 @@ AppClassLoader加载路径如下(By getProperty)：
 </blockquote>
 </li>
 </ul>
-<h4 id="ClassLoader-组织结构"><a href="#ClassLoader-组织结构" class="headerlink" title="ClassLoader 组织结构"></a>ClassLoader 组织结构</h4><h5 id="类继承结构"><a href="#类继承结构" class="headerlink" title="类继承结构"></a>类继承结构</h5><p>1、BootStrapClassLoader为C++代码编写，不继承自ClassLoader<br>2、ExtClassLoader、AppClassLoader均继承自URLClassLoader  </p>
+<h3 id="ClassLoader-组织结构"><a href="#ClassLoader-组织结构" class="headerlink" title="ClassLoader 组织结构"></a>ClassLoader 组织结构</h3><h4 id="类继承结构"><a href="#类继承结构" class="headerlink" title="类继承结构"></a>类继承结构</h4><p>1、BootStrapClassLoader为C++代码编写，不继承自ClassLoader<br>2、ExtClassLoader、AppClassLoader均继承自URLClassLoader  </p>
 <p>具体继承关系如下：</p>
 <div align="center"><br><img src="classloader_extends.png" alt=""><br></div>
 
-<h5 id="层次结构"><a href="#层次结构" class="headerlink" title="层次结构"></a>层次结构</h5><p>前文中提到，ExtClassLoader可由AppClassLoader通过getParent()获得，ClassLoader之间是存在父子关系的，其实这种父子关系只是逻辑关系上的，区别于类继承时父类与子类的关系，两者之间并没有实际的继承关系，而是通过getParent()进行维护。<br>请注意下面这段代码（摘自ClassLoader）：</p>
+<h4 id="层次结构"><a href="#层次结构" class="headerlink" title="层次结构"></a>层次结构</h4><p>前文中提到，ExtClassLoader可由AppClassLoader通过getParent()获得，ClassLoader之间是存在父子关系的，其实这种父子关系只是逻辑关系上的，区别于类继承时父类与子类的关系，两者之间并没有实际的继承关系，而是通过getParent()进行维护。<br>请注意下面这段代码（摘自ClassLoader）：</p>
 <pre><code>private final ClassLoader parent;
 
 public final ClassLoader getParent() {
@@ -482,11 +483,17 @@ System.out.println(&quot;AppClassLoader getParent(): &quot;+appClassLoader.getPa
 输出：
 ExtClassLoader getParent(): null
 AppClassLoader getParent(): sun.misc.Launcher$ExtClassLoader@70d11f32
-</code></pre><p>getParent 为null </p>
-<p>为什么要维护这样的父子关系</p>
-<p>双亲委托模型</p>
-<p>自定义ClassLoader</p>
-<p>类加载过程</p>
+</code></pre><p>层次关系图示为</p>
+<div align="center"><br><img src="parent.png" alt=""><br></div>
+
+<p>我估计这里大家会有一些疑问  </p>
+<p>1、为什么要维护这样的父子关系模型？<br>这样的父子关系模型主要是为了下面将要讲到的双亲委托模型，不要急，慢慢看~  </p>
+<p>2、明明ExtClassLoader的getParent为null,为什么父ClassLoader是BootStrapClassLoader呢？<br>原因为BootStrapClassLoader为C++代码编写，不存在Java示例，无法通过parent持有，但是他们在双亲委托模型中确认存在父和子的逻辑关系。后续也会讲到  </p>
+<blockquote>
+<p>可以想象一下如果BootStrapClassLoader如果由Java代码编写会有什么问题呢？</p>
+</blockquote>
+<p>3、怎么确定的自定义ClassLoader(CustomClassLoader)的父亲是AppClassLoader呢？<br>一会看过自定义ClassLoader的方式就会明白的~</p>
+<h3 id="双亲委托模型"><a href="#双亲委托模型" class="headerlink" title="双亲委托模型"></a>双亲委托模型</h3><h3 id="自定义ClassLoader"><a href="#自定义ClassLoader" class="headerlink" title="自定义ClassLoader"></a>自定义ClassLoader</h3><p>类加载过程</p>
 <p>ClassLoader在Android中</p>
 
       
@@ -505,7 +512,7 @@ AppClassLoader getParent(): sun.misc.Launcher$ExtClassLoader@70d11f32
       
         <div class="post-tags">
           
-            <a href="/tags/Android/" rel="tag"># Android</a>
+            <a href="/tags/Java/" rel="tag"># Java</a>
           
         </div>
       
@@ -613,7 +620,7 @@ AppClassLoader getParent(): sun.misc.Launcher$ExtClassLoader@70d11f32
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">categories</span>
               </a>
             </div>
@@ -624,7 +631,7 @@ AppClassLoader getParent(): sun.misc.Launcher$ExtClassLoader@70d11f32
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -659,7 +666,7 @@ AppClassLoader getParent(): sun.misc.Launcher$ExtClassLoader@70d11f32
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#ClassLoader-基本职责"><span class="nav-number">1.</span> <span class="nav-text">ClassLoader 基本职责</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ClassLoader-类型"><span class="nav-number">2.</span> <span class="nav-text">ClassLoader 类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ClassLoader-组织结构"><span class="nav-number">3.</span> <span class="nav-text">ClassLoader 组织结构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#类继承结构"><span class="nav-number">3.1.</span> <span class="nav-text">类继承结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#层次结构"><span class="nav-number">3.2.</span> <span class="nav-text">层次结构</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ClassLoader-基本职责"><span class="nav-number">1.</span> <span class="nav-text">ClassLoader 基本职责</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ClassLoader-类型"><span class="nav-number">2.</span> <span class="nav-text">ClassLoader 类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ClassLoader-组织结构"><span class="nav-number">3.</span> <span class="nav-text">ClassLoader 组织结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类继承结构"><span class="nav-number">3.1.</span> <span class="nav-text">类继承结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#层次结构"><span class="nav-number">3.2.</span> <span class="nav-text">层次结构</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双亲委托模型"><span class="nav-number">4.</span> <span class="nav-text">双亲委托模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义ClassLoader"><span class="nav-number">5.</span> <span class="nav-text">自定义ClassLoader</span></a></li></ol></div>
             
 
           </div>
