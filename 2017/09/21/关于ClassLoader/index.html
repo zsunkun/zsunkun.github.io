@@ -69,18 +69,18 @@
 
 
 
-<meta name="description" content="ClassLoader 基本职责类加载器负责读取Java的字节码文件，并把它转换成一个示例，换句话说，也就是把类文件从硬盘load到内存中。 ClassLoader 组织结构Java中 bootstrap class loader">
+<meta name="description" content="ClassLoader 基本职责类加载器负责读取Java的字节码文件，并把它转换成一个Class实例，换句话说，也就是把类文件从硬盘load到内存中。 ClassLoader 类型Java中主要存在四种类型的ClassLoaderpublic class ClassLoaderTest {     public static void main(String[] args) {         U">
 <meta name="keywords" content="Android">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于ClassLoader">
 <meta property="og:url" content="http://yoursite.com/2017/09/21/关于ClassLoader/index.html">
 <meta property="og:site_name" content="Hello World">
-<meta property="og:description" content="ClassLoader 基本职责类加载器负责读取Java的字节码文件，并把它转换成一个示例，换句话说，也就是把类文件从硬盘load到内存中。 ClassLoader 组织结构Java中 bootstrap class loader">
+<meta property="og:description" content="ClassLoader 基本职责类加载器负责读取Java的字节码文件，并把它转换成一个Class实例，换句话说，也就是把类文件从硬盘load到内存中。 ClassLoader 类型Java中主要存在四种类型的ClassLoaderpublic class ClassLoaderTest {     public static void main(String[] args) {         U">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2017-09-21T10:20:12.373Z">
+<meta property="og:updated_time" content="2017-09-22T07:47:19.426Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于ClassLoader">
-<meta name="twitter:description" content="ClassLoader 基本职责类加载器负责读取Java的字节码文件，并把它转换成一个示例，换句话说，也就是把类文件从硬盘load到内存中。 ClassLoader 组织结构Java中 bootstrap class loader">
+<meta name="twitter:description" content="ClassLoader 基本职责类加载器负责读取Java的字节码文件，并把它转换成一个Class实例，换句话说，也就是把类文件从硬盘load到内存中。 ClassLoader 类型Java中主要存在四种类型的ClassLoaderpublic class ClassLoaderTest {     public static void main(String[] args) {         U">
 
 
 
@@ -342,11 +342,90 @@
       
 
       
-        <h4 id="ClassLoader-基本职责"><a href="#ClassLoader-基本职责" class="headerlink" title="ClassLoader 基本职责"></a>ClassLoader 基本职责</h4><p>类加载器负责读取Java的字节码文件，并把它转换成一个示例，换句话说，也就是把类文件从硬盘load到内存中。</p>
-<h4 id="ClassLoader-组织结构"><a href="#ClassLoader-组织结构" class="headerlink" title="ClassLoader 组织结构"></a>ClassLoader 组织结构</h4><h5 id="Java中"><a href="#Java中" class="headerlink" title="Java中"></a>Java中</h5><ul>
-<li>bootstrap class loader</li>
-</ul>
+        <h4 id="ClassLoader-基本职责"><a href="#ClassLoader-基本职责" class="headerlink" title="ClassLoader 基本职责"></a>ClassLoader 基本职责</h4><p>类加载器负责读取Java的字节码文件，并把它转换成一个Class实例，换句话说，也就是把类文件从硬盘load到内存中。</p>
+<h4 id="ClassLoader-类型"><a href="#ClassLoader-类型" class="headerlink" title="ClassLoader 类型"></a>ClassLoader 类型</h4><h5 id="Java中主要存在四种类型的ClassLoader"><a href="#Java中主要存在四种类型的ClassLoader" class="headerlink" title="Java中主要存在四种类型的ClassLoader"></a>Java中主要存在四种类型的ClassLoader</h5><pre><code>public class ClassLoaderTest {
+    public static void main(String[] args) {
+        URLClassPath bootStrapPath = sun.misc.Launcher.getBootstrapClassPath();
+        URL[] bootStrapUrls = bootStrapPath.getURLs();
+        System.out.println(&quot;BootStrapClassLoader加载路径如下：&quot;);
+        for (URL url : bootStrapUrls) {
+            System.out.println(url);
+        }
 
+        URLClassLoader extClassLoader = (URLClassLoader) ClassLoader
+                .getSystemClassLoader().getParent();
+        URL[] extUrls = extClassLoader.getURLs();
+        System.out.println(&quot;&quot;);
+        System.out.println(&quot;ExtClassLoader加载路径如下(By getURLs)：&quot;);
+        for (URL url : extUrls) {
+            System.out.println(url);
+        }
+
+        String extProperty = System.getProperty(&quot;java.ext.dirs&quot;);
+        if (extProperty != null) {
+            System.out.println(&quot;&quot;);
+            System.out.println(&quot;ExtClassLoader加载路径如下(By getProperty)：&quot;);
+            StringTokenizer strTokenizer = new StringTokenizer(extProperty,
+                    File.pathSeparator);
+            int count = strTokenizer.countTokens();
+            for (int i = 0; i &lt; count; ++i) {
+                System.out.println(strTokenizer.nextToken());
+            }
+        }
+
+        URLClassLoader appClassLoader = (URLClassLoader) ClassLoader
+                .getSystemClassLoader();
+        URL[] appUrls = appClassLoader.getURLs();
+        System.out.println(&quot;&quot;);
+        System.out.println(&quot;AppClassLoader加载路径如下(By getURLs)：&quot;);
+        for (URL url : appUrls) {
+            System.out.println(url);
+        }
+
+        String appProperty = System.getProperty(&quot;java.class.path&quot;);
+        if (extProperty != null) {
+            System.out.println(&quot;&quot;);
+            System.out.println(&quot;AppClassLoader加载路径如下(By getProperty)：&quot;);
+            StringTokenizer strTokenizer = new StringTokenizer(appProperty,
+                    File.pathSeparator);
+            int count = strTokenizer.countTokens();
+            for (int i = 0; i &lt; count; ++i) {
+                System.out.println(strTokenizer.nextToken());
+            }
+        }
+    }
+}
+</code></pre><p>输出结果如下：  </p>
+<pre><code>BootStrapClassLoader加载路径如下：
+file:/D:/Program%20Files/Java/jre7/lib/resources.jar
+file:/D:/Program%20Files/Java/jre7/lib/rt.jar
+file:/D:/Program%20Files/Java/jre7/lib/sunrsasign.jar
+file:/D:/Program%20Files/Java/jre7/lib/jsse.jar
+file:/D:/Program%20Files/Java/jre7/lib/jce.jar
+file:/D:/Program%20Files/Java/jre7/lib/charsets.jar
+file:/D:/Program%20Files/Java/jre7/lib/jfr.jar
+file:/D:/Program%20Files/Java/jre7/classes
+
+ExtClassLoader加载路径如下(By getURLs)：
+file:/D:/Program%20Files/Java/jre7/lib/ext/access-bridge-64.jar
+file:/D:/Program%20Files/Java/jre7/lib/ext/dnsns.jar
+file:/D:/Program%20Files/Java/jre7/lib/ext/jaccess.jar
+file:/D:/Program%20Files/Java/jre7/lib/ext/localedata.jar
+file:/D:/Program%20Files/Java/jre7/lib/ext/sunec.jar
+file:/D:/Program%20Files/Java/jre7/lib/ext/sunjce_provider.jar
+file:/D:/Program%20Files/Java/jre7/lib/ext/sunmscapi.jar
+file:/D:/Program%20Files/Java/jre7/lib/ext/zipfs.jar
+
+ExtClassLoader加载路径如下(By getProperty)：
+D:\Program Files\Java\jre7\lib\ext
+C:\Windows\Sun\Java\lib\ext
+
+AppClassLoader加载路径如下(By getURLs)：
+file:/D:/WorkSpace/Test/bin/
+
+AppClassLoader加载路径如下(By getProperty)：
+D:\WorkSpace\Test\bin
+</code></pre>
       
     </div>
     
@@ -517,7 +596,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#ClassLoader-基本职责"><span class="nav-number">1.</span> <span class="nav-text">ClassLoader 基本职责</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ClassLoader-组织结构"><span class="nav-number">2.</span> <span class="nav-text">ClassLoader 组织结构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Java中"><span class="nav-number">2.1.</span> <span class="nav-text">Java中</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#ClassLoader-基本职责"><span class="nav-number">1.</span> <span class="nav-text">ClassLoader 基本职责</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ClassLoader-类型"><span class="nav-number">2.</span> <span class="nav-text">ClassLoader 类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Java中主要存在四种类型的ClassLoader"><span class="nav-number">2.1.</span> <span class="nav-text">Java中主要存在四种类型的ClassLoader</span></a></li></ol></li></ol></div>
             
 
           </div>
